@@ -2,7 +2,7 @@
 
 ;;; Facts to test against
 (deftemplate vital-sign
-   (slot age)   ;; Age as a string (e.g., "3–5 y")
+   (slot age)   ;; Age as a number (in month)
    (slot hr)    ;; Heart rate as a number
    (slot rr))   ;; Respiratory rate as a number
 
@@ -17,13 +17,13 @@
    (vital-sign (age ?age) (hr ?hr) (rr ?rr))
 =>
    (if (or 
-         (and (eq ?age "< 1 mo") (> ?hr 190) (> ?rr 60))
-         (and (eq ?age "1–12 mo") (> ?hr 180) (> ?rr 55))
-         (and (eq ?age "1–3 y") (> ?hr 140) (> ?rr 40))
-         (and (eq ?age "3–5 y") (> ?hr 120) (> ?rr 35))
-         (and (eq ?age "5–12 y") (> ?hr 120) (> ?rr 30))
-         (and (eq ?age "12–18 y") (> ?hr 100) (> ?rr 20))
-         (and (eq ?age "> 18 y") (> ?hr 100) (> ?rr 20)))
+         (and (< ?age 1) (> ?hr 190) (> ?rr 60))
+         (and (>= ?age 1) (< ?age 12) (> ?hr 180) (> ?rr 55))
+         (and (>= ?age 12) (< ?age 36) (> ?hr 140) (> ?rr 40))
+         (and (>= ?age 36) (< ?age 60) (> ?hr 120) (> ?rr 35))
+         (and (>= ?age 60) (< ?age 144) (> ?hr 120) (> ?rr 30))
+         (and (>= ?age 144) (< ?age 216) (> ?hr 100) (> ?rr 20))
+         (and (>= ?age 216) (> ?hr 100) (> ?rr 20)))
       then
          (bind ?level 2)  ;; Bind the level to 3 for non-high-risk
          (printout t "Level: " ?level crlf)
