@@ -261,6 +261,83 @@
 )
 
 ;; ===============================
+;; Utility Functions
+;; ===============================
+
+;; Utility: Trimming spaces
+(deffunction str-trim (?str)
+    (if (or (not (stringp ?str)) (eq ?str ""))
+        then (return "")
+    )
+
+    (bind ?len (str-length ?str))
+    (bind ?start 1)
+    (bind ?end ?len)
+
+    ;; Trim leading spaces
+    (while (and (<= ?start ?len)
+                (eq (sub-string ?start ?start ?str) " "))
+        (bind ?start (+ ?start 1)))
+
+    ;; Trim trailing spaces
+    (while (and (>= ?end ?start)
+                (eq (sub-string ?end ?end ?str) " "))
+        (bind ?end (- ?end 1)))
+
+    (if (> ?start ?end)
+        then (return "")
+        else (return (sub-string ?start ?end ?str))
+    )
+)
+
+;; Utility: Cleaning commas (start, end, and redundant commas)
+(deffunction clean-commas (?response)
+    (if (or (not (stringp ?response)) (eq ?response "")) then
+        (return "")
+    )
+    
+    ;; First trim spaces
+    (bind ?response (str-trim ?response))
+    
+    ;; Remove trailing commas
+    (while (and (> (str-length ?response) 0)
+                (eq (sub-string (str-length ?response) (str-length ?response) ?response) ","))
+        (bind ?response (sub-string 1 (- (str-length ?response) 1) ?response)))
+
+    ;; Remove leading commas
+    (while (and (> (str-length ?response) 0)
+                (eq (sub-string 1 1 ?response) ","))
+        (bind ?response (sub-string 2 (str-length ?response) ?response)))
+
+    ;; Remove multiple consecutive commas and normalize spaces around commas
+    (bind ?result "")
+    (bind ?i 1)
+    (bind ?len (str-length ?response))
+    (bind ?last-char "")
+    (bind ?first-valid false)
+    
+    (while (<= ?i ?len) do
+        (bind ?char (sub-string ?i ?i ?response))
+        (if (eq ?char ",") then
+            (if (and (neq ?last-char ",") ?first-valid) then
+                (bind ?result (str-cat ?result ?char)))
+        else 
+            (if (neq ?char " ") then
+                (bind ?first-valid TRUE)
+                (bind ?result (str-cat ?result ?char))))
+        (bind ?last-char ?char)
+        (bind ?i (+ ?i 1)))
+    
+    ;; Remove any trailing comma
+    (if (and (> (str-length ?result) 0)
+             (eq (sub-string (str-length ?result) (str-length ?result) ?result) ","))
+        then
+        (bind ?result (sub-string 1 (- (str-length ?result) 1) ?result)))
+    
+    (return ?result)
+)
+
+;; ===============================
 ;; Rules
 ;; ===============================
 
@@ -320,13 +397,24 @@
     ?new <- (new-case)
     (not (match-result (template "decision-point-a")))
     =>
+    
     (printout t "Tidak ada kasus yang cocok untuk Decision Point A." crlf)
-    (printout t "Apakah kasus ini memerlukan penanganan segera? (true/false): ")
-    (bind ?response (read))
-    (if (eq ?response true) then
+    (bind ?response "")
+    
+    (while (not (member$ ?response (create$ true yes t y false no f n))) do
+        (printout t "Apakah kasus ini memerlukan penanganan segera? (true/false): ")
+        (bind ?response (read))
+        (if (not (member$ ?response (create$ true yes t y false no f n))) then
+            (printout t "Masukkan tidak valid. Silakan ulangi." crlf)
+        )
+    )
+    
+    (if (member$ ?response (create$ true yes t y)) then
         (modify ?res (point-a true))
         (printout t "Pasien MEMERLUKAN PENANGANAN SEGERA." crlf crlf)
-    else
+    )
+    
+    (if (member$ ?response (create$ false no f n)) then
         (modify ?res (point-a false))
         (printout t "Pasien TIDAK MEMERLUKAN PENANGANAN SEGERA." crlf crlf)
     )
@@ -382,12 +470,22 @@
     (not (match-result (template "decision-point-b-1")))
     =>
     (printout t "Tidak ada kasus yang cocok untuk Decision Point B1." crlf)
-    (printout t "Apakah case ini termasuk situasi berisiko tinggi? (true/false): ")
-    (bind ?response (read))
-    (if (eq ?response true) then
+    (bind ?response "")
+    
+    (while (not (member$ ?response (create$ true yes t y false no f n))) do
+        (printout t "Apakah kasus ini termasuk situasi berisiko tinggi? (true/false): ")
+        (bind ?response (read))
+        (if (not (member$ ?response (create$ true yes t y false no f n))) then
+            (printout t "Masukkan tidak valid. Silakan ulangi." crlf)
+        )
+    )
+    
+    (if (member$ ?response (create$ true yes t y)) then
         (modify ?res (point-b1 true))
         (printout t "Pasien dalam SITUASI BERISIKO TINGGI." crlf crlf)
-    else
+    )
+    
+    (if (member$ ?response (create$ false no f n)) then
         (modify ?res (point-b1 false))
         (printout t "Pasien dalam BUKAN SITUASI BERISIKO TINGGI." crlf crlf)
     )
@@ -443,12 +541,22 @@
     (not (match-result (template "decision-point-b-2")))
     =>
     (printout t "Tidak ada kasus yang cocok untuk Decision Point B2." crlf)
-    (printout t "Apakah pasien tampak bingung/lesu/disorientasi? (true/false): ")
-    (bind ?response (read))
-    (if (eq ?response true) then
+    (bind ?response "")
+    
+    (while (not (member$ ?response (create$ true yes t y false no f n))) do
+        (printout t "Apakah pasien tampak bingung/lesu/disorientasi? (true/false): ")
+        (bind ?response (read))
+        (if (not (member$ ?response (create$ true yes t y false no f n))) then
+            (printout t "Masukkan tidak valid. Silakan ulangi." crlf)
+        )
+    )
+    
+    (if (member$ ?response (create$ true yes t y)) then
         (modify ?res (point-b2 true))
         (printout t "Pasien tampak BINGUNG/LESU/DISORIENTASI." crlf crlf)
-    else
+    )
+    
+    (if (member$ ?response (create$ false no f n)) then
         (modify ?res (point-b2 false))
         (printout t "Pasien TIDAK tampak BINGUNG/LESU/DISORIENTASI." crlf crlf)
     )
@@ -459,29 +567,38 @@
     ?res <- (decision-result 
                 (point-a false) 
                 (point-b3 unchecked)
-                (final-decision ?fd&:(eq ?fd "Level-3"))
-            )
+                (final-decision ?fd&:(eq ?fd "Level-3")))
     ?new <- (new-case)
     =>
-    (printout t "Apakah pasien mengalami nyeri? ")
-    (printout t "Masukkan skala nyeri pasien (0-10): ")
-    (bind ?pain-input (read))
+    (bind ?pain-input "")
     
-    (while (or (< ?pain-input 0) (> ?pain-input 10)) do
-        (printout t "Nilai tidak valid. Masukkan skala nyeri (0-10): ")
-        (bind ?pain-input (read)))
+    ;; Input and validation
+    (while (or (not (numberp ?pain-input)) 
+               (< ?pain-input 0) 
+               (> ?pain-input 10)) do
+        (printout t "Masukkan skala nyeri pasien (0-10): ")
+        (bind ?pain-input (read))
+        
+        ;; Handle non-numeric input
+        (if (or (not (numberp ?pain-input))
+               (< ?pain-input 0) 
+               (> ?pain-input 10)
+            ) then
+            (printout t "Input tidak valid. Harap masukkan angka antara 0-10." crlf)
+            (bind ?pain-input "")
+        )
+    )
     
     (modify ?new (pain-scale ?pain-input))
     
-    ;; Determine if pain severity
+    ;; Determine pain severity
     (if (> ?pain-input 6) then
         (modify ?res (point-b3 true))
         (printout t "Pasien mengalami NYERI BERAT." crlf crlf)
     else
         (modify ?res (point-b3 false))
-        (printout t "Pasien mengalami NYERI RINGAN/SEDANG." crlf crlf)
-    )
-)
+        (printout t "Pasien mengalami NYERI RINGAN/SEDANG." crlf crlf)))
+
 
 ;; Rule: Case-Comparing Classification Decision Point C - Only if B false
 (defrule compare-symptoms-point-c
@@ -580,19 +697,24 @@
     )
 
     (if (eq ?point-c-value "") then
-        ;; Determine resource(s) count
-        (bind ?comma-count 0)
-        (bind ?pos 0)
-        (while (> (str-length ?response) ?pos) do
-            (if (eq (sub-string (+ ?pos 1) (+ ?pos 1) ?response) ",")
-                then (bind ?comma-count (+ ?comma-count 1)))
-            (bind ?pos (+ ?pos 1))
+        ;; Clean the response and count actual resources
+        (bind ?response (clean-commas ?response))
+        (if (eq ?response "") then
+            (bind ?length 0)
+            (bind ?point-c-value "None")
+        else
+            (bind ?comma-count 0)
+            (bind ?pos 0)
+            (while (> (str-length ?response) ?pos) do
+                (if (eq (sub-string (+ ?pos 1) (+ ?pos 1) ?response) ",")
+                    then (bind ?comma-count (+ ?comma-count 1)))
+                (bind ?pos (+ ?pos 1))
+            )
+            (bind ?length (+ ?comma-count 1))
+            
+            (if (eq ?length 1) then (bind ?point-c-value "One"))
+            (if (> ?length 1) then (bind ?point-c-value "Many"))
         )
-        
-        (bind ?length (+ ?comma-count 1))
-        
-        (if (eq ?length 1) then (bind ?point-c-value "One"))
-        (if (> ?length 1) then (bind ?point-c-value "Many"))
     )
 
     (modify ?res (point-c ?point-c-value))
