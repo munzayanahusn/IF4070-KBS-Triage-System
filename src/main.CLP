@@ -7,32 +7,38 @@
     (slot hr)
     (slot rr)
     (slot spo2)
-    (slot pain-scale))
+    (slot pain-scale)
+)
 
 (deftemplate decision-point-a
     (slot case-id)
     (multislot symptoms)
-    (slot requires-immediate-lifesaving-intervention (default false)))
+    (slot requires-immediate-lifesaving-intervention (default false))
+)
 
 (deftemplate decision-point-b-1
     (slot case-id)
     (multislot symptoms)
-    (slot high-risk (default false)))
+    (slot high-risk (default false))
+)
 
 (deftemplate decision-point-b-2
     (slot case-id)
     (multislot symptoms)
-    (slot confused-lethargic-disoriented (default false)))
+    (slot confused-lethargic-disoriented (default false))
+)
 
 (deftemplate decision-point-b-3
     (slot case-id)
     (multislot symptoms)
-    (slot severe-pain (default false)))
+    (slot severe-pain (default false))
+)
 
 (deftemplate decision-point-c
     (slot case-id)
     (multislot symptoms)
-    (multislot resources))
+    (multislot resources)
+)
 
 (deftemplate decision-result
     (slot point-a (default unchecked))
@@ -41,7 +47,8 @@
     (slot point-b3 (default unchecked))
     (slot point-c (default unchecked))
     (slot point-d (default unchecked))
-    (slot final-decision (default "Level-3")))
+    (slot final-decision (default "Level-3"))
+)
 
 (deftemplate match-result
     (slot case-id)
@@ -49,10 +56,12 @@
     (slot matched-count)
     (slot label)
     (multislot resources)
-    (slot template))
+    (slot template)
+)
 
 (deftemplate processing-complete
-    (slot value (default false)))
+    (slot value (default false))
+)
 
 ;; ===============================
 ;; Facts Database
@@ -260,13 +269,15 @@
     (not (decision-result))
     =>
     (assert (decision-result))
-    (printout t "Decision system initialized." crlf))
+    (printout t "Decision system initialized." crlf crlf)
+)
 
 ;; Rule: Case-Comparing Classification Decision Point A
 (defrule compare-symptoms-point-a
     ?res <- (decision-result 
                 (point-a unchecked) 
-                (final-decision ?fd&:(eq ?fd "Level-3")))
+                (final-decision ?fd&:(eq ?fd "Level-3"))
+            )
     ?new <- (new-case (symptoms $?new-symptoms))
     =>
     (bind ?best-match-id "")
@@ -296,7 +307,7 @@
                     (matched-count ?best-match-count)
                     (label ?best-match-label)
                     (template "decision-point-a")))
-        (printout t "Best Matched Case A: " ?best-match-id " with " ?best-match-count " symptoms. Label: " ?best-match-label crlf)
+        (printout t "Best Matched Case A: " ?best-match-id " with " ?best-match-count " symptoms. Label: " ?best-match-label crlf crlf)
     )
 )
 
@@ -304,7 +315,8 @@
 (defrule prompt-no-match-a
     ?res <- (decision-result 
                 (point-a unchecked) 
-                (final-decision ?fd&:(eq ?fd "Level-3")))
+                (final-decision ?fd&:(eq ?fd "Level-3"))
+            )
     ?new <- (new-case)
     (not (match-result (template "decision-point-a")))
     =>
@@ -313,10 +325,12 @@
     (bind ?response (read))
     (if (eq ?response true) then
         (modify ?res (point-a true))
-        (printout t "Kasus dikategorikan sebagai MEMERLUKAN PENANGANAN SEGERA." crlf)
+        (printout t "Kasus dikategorikan sebagai MEMERLUKAN PENANGANAN SEGERA." crlf crlf)
     else
         (modify ?res (point-a false))
-        (printout t "Case dikategorikan sebagai TIDAK MEMERLUKAN PENANGANAN SEGERA." crlf)))
+        (printout t "Case dikategorikan sebagai TIDAK MEMERLUKAN PENANGANAN SEGERA." crlf crlf)
+    )
+)
 
 ;; Rule: Case-Comparing Classification Decision Point B1 - Only if A false
 (defrule compare-symptoms-point-b1
@@ -353,7 +367,7 @@
                     (matched-count ?best-match-count)
                     (label ?best-match-label)
                     (template "decision-point-b-1")))
-        (printout t "Best Matched Case B1: " ?best-match-id " with " ?best-match-count " symptoms. Label: " ?best-match-label crlf)
+        (printout t "Best Matched Case B1: " ?best-match-id " with " ?best-match-count " symptoms. Label: " ?best-match-label crlf crlf)
     )
 )
 
@@ -362,7 +376,8 @@
     ?res <- (decision-result 
                 (point-a false)
                 (point-b1 unchecked)
-                (final-decision ?fd&:(eq ?fd "Level-3")))
+                (final-decision ?fd&:(eq ?fd "Level-3"))
+            )
     ?new <- (new-case)
     (not (match-result (template "decision-point-b-1")))
     =>
@@ -371,11 +386,12 @@
     (bind ?response (read))
     (if (eq ?response true) then
         (modify ?res (point-b1 true))
-        (printout t "Kasus dikategorikan sebagai SITUASI BERISIKO TINGGI." crlf)
+        (printout t "Kasus dikategorikan sebagai SITUASI BERISIKO TINGGI." crlf crlf)
     else
         (modify ?res (point-b1 false))
-        (printout t "Case dikategorikan sebagai BUKAN SITUASI BERISIKO TINGGI." crlf)))
-
+        (printout t "Case dikategorikan sebagai BUKAN SITUASI BERISIKO TINGGI." crlf crlf)
+    )
+)
 
 ;; Rule: Case-Comparing Classification Decision Point B2 - Only if A false
 (defrule compare-symptoms-point-b2
@@ -412,7 +428,7 @@
                     (matched-count ?best-match-count)
                     (label ?best-match-label)
                     (template "decision-point-b-2")))
-        (printout t "Best Matched Case B2: " ?best-match-id " with " ?best-match-count " symptoms. Label: " ?best-match-label crlf)
+        (printout t "Best Matched Case B2: " ?best-match-id " with " ?best-match-count " symptoms. Label: " ?best-match-label crlf crlf)
     )
 )
 
@@ -421,7 +437,8 @@
     ?res <- (decision-result 
                 (point-a false) 
                 (point-b2 unchecked) 
-                (final-decision ?fd&:(eq ?fd "Level-3")))
+                (final-decision ?fd&:(eq ?fd "Level-3"))
+            )
     ?new <- (new-case)
     (not (match-result (template "decision-point-b-2")))
     =>
@@ -430,17 +447,20 @@
     (bind ?response (read))
     (if (eq ?response true) then
         (modify ?res (point-b2 true))
-        (printout t "Pasien tampak BINGUNG/LESU/DISORIENTASI." crlf)
+        (printout t "Pasien tampak BINGUNG/LESU/DISORIENTASI." crlf crlf)
     else
         (modify ?res (point-b2 false))
-        (printout t "Pasien TIDAK tampak BINGUNG/LESU/DISORIENTASI." crlf)))
+        (printout t "Pasien TIDAK tampak BINGUNG/LESU/DISORIENTASI." crlf crlf)
+    )
+)
 
 ;; Rule: Simple Classification Decision Point B3 - Pain Assessment
 (defrule check-severe-pain
     ?res <- (decision-result 
                 (point-a false) 
                 (point-b3 unchecked)
-                (final-decision ?fd&:(eq ?fd "Level-3")))
+                (final-decision ?fd&:(eq ?fd "Level-3"))
+            )
     ?new <- (new-case)
     =>
     (printout t "Masukkan skala nyeri pasien (0-10): ")
@@ -457,10 +477,10 @@
     ;; Determine if pain is severe (>6)
     (if (> ?pain-input 6) then
         (modify ?res (point-b3 true))
-        (printout t "Pasien mengalami NYERI BERAT." crlf)
+        (printout t "Pasien mengalami NYERI BERAT." crlf crlf)
     else
         (modify ?res (point-b3 false))
-        (printout t "Pasien mengalami NYERI RINGAN/SEDANG." crlf)
+        (printout t "Pasien mengalami NYERI RINGAN/SEDANG." crlf crlf)
     )
 )
 
@@ -528,7 +548,7 @@
             
         (printout t "Best Matched Case C with " ?best-match-count " symptoms." crlf)
         (printout t "Required Resource(s): " ?best-match-resources crlf)
-        (printout t "Point C Label: " ?point-c-value crlf)
+        (printout t "Point C Label: " ?point-c-value crlf crlf)
     )
 )
 
@@ -540,11 +560,13 @@
                 (point-b2 ?pb2)
                 (point-b3 ?pb3)
                 (point-c unchecked) 
-                (final-decision ?fd&:(eq ?fd "Level-3")))
+                (final-decision ?fd&:(eq ?fd "Level-3"))
+            )
     (test (and (member$ ?pa (create$ false))
             (member$ ?pb1 (create$ false))
             (member$ ?pb2 (create$ false))
-            (member$ ?pb3 (create$ false))))
+            (member$ ?pb3 (create$ false)))
+    )
     ?new <- (new-case (symptoms $?new-symptoms))
     (not (match-result (template "decision-point-c")))
     =>
@@ -554,7 +576,9 @@
         (printout t "Masukkan resource yang dibutuhkan pasien case tersebut (pisahkan dengan koma): ")
         (bind ?response (readline))
         (if (eq ?response "") then
-            (printout t "Input tidak valid. Silakan coba lagi." crlf)))
+            (printout t "Input tidak valid. Silakan coba lagi." crlf crlf)
+        )
+    )
 
     ;; Count the number of commas to determine resource count
     (bind ?comma-count 0)
@@ -562,7 +586,8 @@
     (while (> (str-length ?response) ?pos) do
         (if (eq (sub-string (+ ?pos 1) (+ ?pos 1) ?response) ",")
             then (bind ?comma-count (+ ?comma-count 1)))
-        (bind ?pos (+ ?pos 1)))
+        (bind ?pos (+ ?pos 1))
+    )
     
     ;; Number of resources is comma count + 1
     (bind ?length (+ ?comma-count 1))
@@ -575,7 +600,8 @@
     ;; Assert result and update
     (modify ?res (point-c ?point-c-value))
     (printout t "Resource(s) untuk case tersebut: [" ?response "] : " ?length crlf)
-    (printout t "Label: " ?point-c-value crlf))
+    (printout t "Label: " ?point-c-value crlf crlf)
+)
 
 ;; Rule: Simple Classification Decision Point D - Only if C many
 (defrule check-vital-sign
@@ -586,17 +612,20 @@
                 (point-b3 ?pb3) 
                 (point-c ?pc)
                 (point-d unchecked) 
-                (final-decision ?fd&:(eq ?fd "Level-3")))
+                (final-decision ?fd&:(eq ?fd "Level-3"))
+            )
     (test (and (member$ ?pa (create$ false))
                (member$ ?pb1 (create$ false))
                (member$ ?pb2 (create$ false))
                (member$ ?pb3 (create$ false))
-               (member$ ?pc (create$ "Many"))))
+               (member$ ?pc (create$ "Many")))
+    )
     ?new <- (new-case
                 (age ?age)
                 (hr ?hr)
                 (rr ?rr)
-                (spo2 ?spo2))
+                (spo2 ?spo2)
+            )
     =>
     (if (and (< ?spo2 92) (or 
             (and (< ?age 1) (> ?hr 190) (> ?rr 60))
@@ -605,13 +634,14 @@
             (and (>= ?age 36) (< ?age 60) (> ?hr 120) (> ?rr 35))
             (and (>= ?age 60) (< ?age 144) (> ?hr 120) (> ?rr 30))
             (and (>= ?age 144) (< ?age 216) (> ?hr 100) (> ?rr 20))
-            (and (>= ?age 216) (> ?hr 100) (> ?rr 20))))
+            (and (>= ?age 216) (> ?hr 100) (> ?rr 20)))
+        )
         then
             (modify ?res (point-d true))
-            (printout t "Berdasarkan tanda vital, pasien termasuk BERISIKO TINGGI" crlf)
+            (printout t "Berdasarkan tanda vital, pasien termasuk BERISIKO TINGGI" crlf crlf)
         else
             (modify ?res (point-d false))
-            (printout t "Berdasarkan tanda vital, pasien termasuk TIDAK BERISIKO TINGGI" crlf)
+            (printout t "Berdasarkan tanda vital, pasien termasuk TIDAK BERISIKO TINGGI" crlf crlf)
     )
 )
 
@@ -624,7 +654,8 @@
                 (point-b3 ?pb3)
                 (point-c ?pc) 
                 (point-d ?pd)
-                (final-decision "Level-3"))
+                (final-decision "Level-3")
+            )
     =>
     (if (eq ?pa true) then
         (modify ?res (final-decision "Level-1"))
@@ -647,14 +678,21 @@
                         (printout t "Final Decision: Level-2" crlf)
                     else
                         (modify ?res (final-decision "Level-3"))
-                        (printout t "Final Decision: Level-3" crlf)))))))
+                        (printout t "Final Decision: Level-3" crlf)
+                    )
+                )
+            )                
+        )
+    )
+)
 
 (defrule mark-processing-complete
     (declare (salience -50))
     ?res <- (decision-result (final-decision ~"Level-3"))
     (not (processing-complete))
     =>
-    (assert (processing-complete (value true))))
+    (assert (processing-complete (value true)))
+)
     
 ;; Rule: Cleanup Match Results
 (defrule clear-match-results
@@ -662,4 +700,5 @@
     (processing-complete (value true))
     ?m <- (match-result)
     =>
-    (retract ?m))
+    (retract ?m)
+)
