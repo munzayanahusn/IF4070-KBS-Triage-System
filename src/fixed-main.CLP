@@ -464,20 +464,25 @@
         (if (eq ?response "") then
             (printout t "Input tidak valid. Silakan coba lagi." crlf)))
 
-    ;; Avoid errors when splitting resources
-    (bind ?resources (create$))
-    (if (> (str-length ?response) 0) then
-        (bind ?resources (explode$ (str-replace "," " " ?response))))
-
-    ;; Check resource length
-    (bind ?length (length$ ?resources))
+    ;; Count the number of commas to determine resource count
+    (bind ?comma-count 0)
+    (bind ?pos 0)
+    (while (> (str-length ?response) ?pos) do
+        (if (eq (sub-string (+ ?pos 1) (+ ?pos 1) ?response) ",")
+            then (bind ?comma-count (+ ?comma-count 1)))
+        (bind ?pos (+ ?pos 1)))
+    
+    ;; Number of resources is comma count + 1
+    (bind ?length (+ ?comma-count 1))
+    
+    ;; Determine point-c-value based on resource count
     (bind ?point-c-value "None")
     (if (eq ?length 1) then (bind ?point-c-value "One"))
     (if (> ?length 1) then (bind ?point-c-value "Many"))
 
     ;; Assert result and update
     (modify ?res (point-c ?point-c-value))
-    (printout t "Resource(s) untuk case tersebut: " ?resources crlf)
+    (printout t "Resource(s) untuk case tersebut: [" ?response "] : " ?length crlf)
     (printout t "Label: " ?point-c-value crlf))
 
 ;; Rule: Simple Classification Decision Point D - Only if C many
