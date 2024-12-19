@@ -194,70 +194,70 @@
     (decision-point-b-2 (case-id B2-40) (symptoms "sakit kepala" "kelelahan" "pegal di badan") (confused-lethargic-disoriented false))
 
     ;; Point C cases
-   (decision-point-c (case-id C-1) (symptoms "henti jantung" "tidak responsif" "tidak bernapas") (resources "cpr" "defibrillator" "advanced airway management"))
-   (decision-point-c (case-id C-2) (symptoms "perdarahan vagina" "nyeri perut bawah" "pingsan" "lemas") (resources "abdominal usg" "iv fluids" "blood test"))
-   (decision-point-c (case-id C-3) (symptoms "batuk darah" "demam" "sesak napas" "berat badan turun") (resources "chest x-ray" "sputum test"))
-   (decision-point-c (case-id C-4) (symptoms "muntah darah" "bab hitam" "nyeri perut" "pucat" "lemah") (resources "abdominal ultrasound" "iv fluids"))
-   (decision-point-c (case-id C-5) (symptoms "sumbatan jalan napas" "tersedak" "napas sesak") (resources "advanced airway management" "cpr"))
-   (decision-point-c (case-id C-6) (symptoms "kejang" "kehilangan kesadaran" "muntah") (resources "iv anticonvulsants" "brain ct scan"))
-   (decision-point-c (case-id C-7) (symptoms "demam" "nyeri perut" "mual" "muntah" "bab cair") (resources "blood test" "iv fluids"))
-   (decision-point-c (case-id C-8) (symptoms "tersetrum" "luka bakar" "kejang otot") (resources "ecg" "iv fluids"))
-   (decision-point-c (case-id C-9) (symptoms "perdarahan hebat" "tekanan darah rendah" "denyut cepat") (resources "blood test" "specialty consultation"))
-   (decision-point-c (case-id C-10) (symptoms "sakit kepala" "leher kaku" "demam") (resources "lumbar puncture" "blood test"))
-   (decision-point-c (case-id C-11) (symptoms "nyeri pinggang" "darah dalam urin" "demam" "bak sedikit-sedikit") (resources "kidney ultrasound" "urinalysis"))
-   (decision-point-c (case-id C-12) (symptoms "luka robek" "nyeri" "perdarahan aktif") (resources "laseration repair"))
-   (decision-point-c (case-id C-13) (symptoms "penurunan kesadaran" "bicara ngelantur" "lemas") (resources "glucose blood test"))
-   (decision-point-c (case-id C-14) (symptoms "nyeri dada kiri tembus ke belakang" "sesak napas" "jantung berdebar") (resources "ecg"))
-   (decision-point-c (case-id C-15) (symptoms "nyeri kepala hebat" "muntah hebat" "pandangan kabur mendadak") (resources "brain ct scan"))
-   (decision-point-c (case-id C-16) (symptoms "nyeri punggung bawah" "kaki lemas" "kesemutan") (resources "spine mri"))
-   (decision-point-c (case-id C-17) (symptoms "nyeri saat bak" "darah dalam urin" "bak mengejan") (resources "urinalysis"))
-   (decision-point-c (case-id C-18) (symptoms "nyeri perut kanan bawah" "demam" "muntah") (resources "abdominal usg"))
-   (decision-point-c (case-id C-19) (symptoms "mimisan" "demam" "pusing" "pucat") (resources "blood test"))
-   (decision-point-c (case-id C-20) (symptoms "kulit melepuh" "luka bakar" "nyeri") (resources "iv fluids"))
-   (decision-point-c (case-id C-21) (symptoms "gangguan bicara" "wajah kaku satu sisi" "kelemahan kaki & tangan 1 sisi") (resources "brain mri"))
-   (decision-point-c (case-id C-22) (symptoms "bengkak kemerahan pada sendi" "nyeri" "gerakan terbatas") (resources "joint x-ray"))
-   (decision-point-c (case-id C-23) (symptoms "cedera lutut" "bengkak" "nyeri" "sulit berjalan") (resources "knee x-ray"))
-   (decision-point-c (case-id C-24) (symptoms "nyeri dada" "berkeringat" "nyeri menjalar ke lengan" "berdebar") (resources "ecg"))
-   (decision-point-c (case-id C-25) (symptoms "nyeri dada" "sesak napas" "kulit kebiruan") (resources "ecg"))
-   (decision-point-c (case-id C-26) (symptoms "luka tusuk" "perdarahan aktif" "pucat") (resources "laceration repair"))
-   (decision-point-c (case-id C-27) (symptoms "trauma kepala" "muntah" "kehilangan kesadaran") (resources "head ct scan"))
-   (decision-point-c (case-id C-28) (symptoms "trauma dada" "lebam pada dada" "sulit bernapas" "pucat") (resources "chest x-ray"))
-   (decision-point-c (case-id C-29) (symptoms "bengkak kaki" "nyeri kaki" "kulit kemerahan") (resources "doppler ultrasound"))
-   (decision-point-c (case-id C-30) (symptoms "bab cair" "muntah berulang" "lemas") (resources "iv fluids"))
-   (decision-point-c (case-id C-31) (symptoms "luka bakar besar" "kulit hangus" "dehidrasi berat") (resources "iv fluids"))
-   (decision-point-c (case-id C-32) (symptoms "benjolan pada selangkangan" "nyeri") (resources "abdominal usg"))
-   (decision-point-c (case-id C-33) (symptoms "sesak nafas" "napas berbunyi") (resources "nebulized medications"))
-   (decision-point-c (case-id C-34) (symptoms "nyeri kepala" "pusing") (resources))
-   (decision-point-c (case-id C-35) (symptoms "bersin-bersin" "hidung tersumbat" "pilek" "suara sengau") (resources))
-   (decision-point-c (case-id C-36) (symptoms "nyeri tenggorokan" "suara serak" "batuk" "sulit menelan") (resources))
-   (decision-point-c (case-id C-37) (symptoms "mata gatal" "mata merah" "keluar air mata" "penglihatan kabur") (resources))
-   (decision-point-c (case-id C-38) (symptoms "kulit kering" "gatal-gatal" "kulit bersisik") (resources))
-   (decision-point-c (case-id C-39) (symptoms "bibir pecah-pecah" "mulut kering") (resources))
-   (decision-point-c (case-id C-40) (symptoms "kelelahan" "nyeri sendi") (resources))
-   (decision-point-c (case-id C-41) (symptoms "nyeri punggung" "lemas") (resources))
-   (decision-point-c (case-id C-42) (symptoms "gusi bengkak" "nyeri gigi" "bau mulut") (resources))
-   (decision-point-c (case-id C-43) (symptoms "mata kering" "mata lelah" "penglihatan kabur") (resources))
-   (decision-point-c (case-id C-44) (symptoms "nyeri ulu hati" "perut kembung" "sering bersendawa") (resources))
-   (decision-point-c (case-id C-45) (symptoms "gangguan bicara" "wajah kaku satu sisi" "pusing") (resources))
-   (decision-point-c (case-id C-46) (symptoms "nyeri pada kuku" "kuku bernanah" "sekitar kuku bengkak") (resources))
-   (decision-point-c (case-id C-47) (symptoms "bengkak pada pipi" "demam") (resources))
-   (decision-point-c (case-id C-48) (symptoms "demam" "batuk" "pilek" "nyeri otot") (resources))
-   (decision-point-c (case-id C-49) (symptoms "telinga gatal" "telinga berdenging" "pendengaran berkurang") (resources))
-   (decision-point-c (case-id C-50) (symptoms "bintil di kelopak mata" "mata berair" "mata merah") (resources))
-   (decision-point-c (case-id C-51) (symptoms "nyeri pergelangan tangan" "kesemutan" "rasa baal di jari") (resources))
-   (decision-point-c (case-id C-52) (symptoms "kelelahan" "sulit tidur" "nafsu makan menurun") (resources))
-   (decision-point-c (case-id C-53) (symptoms "nyeri ulu hati" "mual" "muntah" "tenggorokan panas") (resources))
-   (decision-point-c (case-id C-54) (symptoms "nyeri gigi" "gusi bengkak" "kesulitan mengunyah") (resources))
-   (decision-point-c (case-id C-55) (symptoms "mata merah" "keluar cairan" "benda asing di mata") (resources))
-   (decision-point-c (case-id C-56) (symptoms "gatal hebat" "ruam kulit" "kulit memerah") (resources))
-   (decision-point-c (case-id C-57) (symptoms "nyeri perut" "sulit bab" "perut kembung") (resources))
-   (decision-point-c (case-id C-58) (symptoms "telinga nyeri" "keluar cairan" "berdenging") (resources))
-   (decision-point-c (case-id C-59) (symptoms "sumbatan benda asing di hidung" "hidung bau") (resources))
-   (decision-point-c (case-id C-60) (symptoms "mual ringan" "hilang nafsu makan" "pusing ringan") (resources))
-   (decision-point-c (case-id C-61) (symptoms "pilek" "tenggorokan gatal" "bersin") (resources))
-   (decision-point-c (case-id C-62) (symptoms "sakit kepala ringan" "kelelahan" "demam rendah") (resources))
-   (decision-point-c (case-id C-63) (symptoms "kulit bernanah" "luka infeksi" "demam" "bengkak") (resources))
-   (decision-point-c (case-id C-64) (symptoms "kecemasan berlebih" "serangan panik" "pusing" "mual") (resources))
+    (decision-point-c (case-id C-1) (symptoms "henti jantung" "tidak responsif" "tidak bernapas") (resources "cpr" "defibrillator" "advanced airway management"))
+    (decision-point-c (case-id C-2) (symptoms "perdarahan vagina" "nyeri perut bawah" "pingsan" "lemas") (resources "abdominal usg" "iv fluids" "blood test"))
+    (decision-point-c (case-id C-3) (symptoms "batuk darah" "demam" "sesak napas" "berat badan turun") (resources "chest x-ray" "sputum test"))
+    (decision-point-c (case-id C-4) (symptoms "muntah darah" "bab hitam" "nyeri perut" "pucat" "lemah") (resources "abdominal ultrasound" "iv fluids"))
+    (decision-point-c (case-id C-5) (symptoms "sumbatan jalan napas" "tersedak" "napas sesak") (resources "advanced airway management" "cpr"))
+    (decision-point-c (case-id C-6) (symptoms "kejang" "kehilangan kesadaran" "muntah") (resources "iv anticonvulsants" "brain ct scan"))
+    (decision-point-c (case-id C-7) (symptoms "demam" "nyeri perut" "mual" "muntah" "bab cair") (resources "blood test" "iv fluids"))
+    (decision-point-c (case-id C-8) (symptoms "tersetrum" "luka bakar" "kejang otot") (resources "ecg" "iv fluids"))
+    (decision-point-c (case-id C-9) (symptoms "perdarahan hebat" "tekanan darah rendah" "denyut cepat") (resources "blood test" "specialty consultation"))
+    (decision-point-c (case-id C-10) (symptoms "sakit kepala" "leher kaku" "demam") (resources "lumbar puncture" "blood test"))
+    (decision-point-c (case-id C-11) (symptoms "nyeri pinggang" "darah dalam urin" "demam" "bak sedikit-sedikit") (resources "kidney ultrasound" "urinalysis"))
+    (decision-point-c (case-id C-12) (symptoms "luka robek" "nyeri" "perdarahan aktif") (resources "laseration repair"))
+    (decision-point-c (case-id C-13) (symptoms "penurunan kesadaran" "bicara ngelantur" "lemas") (resources "glucose blood test"))
+    (decision-point-c (case-id C-14) (symptoms "nyeri dada kiri tembus ke belakang" "sesak napas" "jantung berdebar") (resources "ecg"))
+    (decision-point-c (case-id C-15) (symptoms "nyeri kepala hebat" "muntah hebat" "pandangan kabur mendadak") (resources "brain ct scan"))
+    (decision-point-c (case-id C-16) (symptoms "nyeri punggung bawah" "kaki lemas" "kesemutan") (resources "spine mri"))
+    (decision-point-c (case-id C-17) (symptoms "nyeri saat bak" "darah dalam urin" "bak mengejan") (resources "urinalysis"))
+    (decision-point-c (case-id C-18) (symptoms "nyeri perut kanan bawah" "demam" "muntah") (resources "abdominal usg"))
+    (decision-point-c (case-id C-19) (symptoms "mimisan" "demam" "pusing" "pucat") (resources "blood test"))
+    (decision-point-c (case-id C-20) (symptoms "kulit melepuh" "luka bakar" "nyeri") (resources "iv fluids"))
+    (decision-point-c (case-id C-21) (symptoms "gangguan bicara" "wajah kaku satu sisi" "kelemahan kaki & tangan 1 sisi") (resources "brain mri"))
+    (decision-point-c (case-id C-22) (symptoms "bengkak kemerahan pada sendi" "nyeri" "gerakan terbatas") (resources "joint x-ray"))
+    (decision-point-c (case-id C-23) (symptoms "cedera lutut" "bengkak" "nyeri" "sulit berjalan") (resources "knee x-ray"))
+    (decision-point-c (case-id C-24) (symptoms "nyeri dada" "berkeringat" "nyeri menjalar ke lengan" "berdebar") (resources "ecg"))
+    (decision-point-c (case-id C-25) (symptoms "nyeri dada" "sesak napas" "kulit kebiruan") (resources "ecg"))
+    (decision-point-c (case-id C-26) (symptoms "luka tusuk" "perdarahan aktif" "pucat") (resources "laceration repair"))
+    (decision-point-c (case-id C-27) (symptoms "trauma kepala" "muntah" "kehilangan kesadaran") (resources "head ct scan"))
+    (decision-point-c (case-id C-28) (symptoms "trauma dada" "lebam pada dada" "sulit bernapas" "pucat") (resources "chest x-ray"))
+    (decision-point-c (case-id C-29) (symptoms "bengkak kaki" "nyeri kaki" "kulit kemerahan") (resources "doppler ultrasound"))
+    (decision-point-c (case-id C-30) (symptoms "bab cair" "muntah berulang" "lemas") (resources "iv fluids"))
+    (decision-point-c (case-id C-31) (symptoms "luka bakar besar" "kulit hangus" "dehidrasi berat") (resources "iv fluids"))
+    (decision-point-c (case-id C-32) (symptoms "benjolan pada selangkangan" "nyeri") (resources "abdominal usg"))
+    (decision-point-c (case-id C-33) (symptoms "sesak nafas" "napas berbunyi") (resources "nebulized medications"))
+    (decision-point-c (case-id C-34) (symptoms "nyeri kepala" "pusing") (resources))
+    (decision-point-c (case-id C-35) (symptoms "bersin-bersin" "hidung tersumbat" "pilek" "suara sengau") (resources))
+    (decision-point-c (case-id C-36) (symptoms "nyeri tenggorokan" "suara serak" "batuk" "sulit menelan") (resources))
+    (decision-point-c (case-id C-37) (symptoms "mata gatal" "mata merah" "keluar air mata" "penglihatan kabur") (resources))
+    (decision-point-c (case-id C-38) (symptoms "kulit kering" "gatal-gatal" "kulit bersisik") (resources))
+    (decision-point-c (case-id C-39) (symptoms "bibir pecah-pecah" "mulut kering") (resources))
+    (decision-point-c (case-id C-40) (symptoms "kelelahan" "nyeri sendi") (resources))
+    (decision-point-c (case-id C-41) (symptoms "nyeri punggung" "lemas") (resources))
+    (decision-point-c (case-id C-42) (symptoms "gusi bengkak" "nyeri gigi" "bau mulut") (resources))
+    (decision-point-c (case-id C-43) (symptoms "mata kering" "mata lelah" "penglihatan kabur") (resources))
+    (decision-point-c (case-id C-44) (symptoms "nyeri ulu hati" "perut kembung" "sering bersendawa") (resources))
+    (decision-point-c (case-id C-45) (symptoms "gangguan bicara" "wajah kaku satu sisi" "pusing") (resources))
+    (decision-point-c (case-id C-46) (symptoms "nyeri pada kuku" "kuku bernanah" "sekitar kuku bengkak") (resources))
+    (decision-point-c (case-id C-47) (symptoms "bengkak pada pipi" "demam") (resources))
+    (decision-point-c (case-id C-48) (symptoms "demam" "batuk" "pilek" "nyeri otot") (resources))
+    (decision-point-c (case-id C-49) (symptoms "telinga gatal" "telinga berdenging" "pendengaran berkurang") (resources))
+    (decision-point-c (case-id C-50) (symptoms "bintil di kelopak mata" "mata berair" "mata merah") (resources))
+    (decision-point-c (case-id C-51) (symptoms "nyeri pergelangan tangan" "kesemutan" "rasa baal di jari") (resources))
+    (decision-point-c (case-id C-52) (symptoms "kelelahan" "sulit tidur" "nafsu makan menurun") (resources))
+    (decision-point-c (case-id C-53) (symptoms "nyeri ulu hati" "mual" "muntah" "tenggorokan panas") (resources))
+    (decision-point-c (case-id C-54) (symptoms "nyeri gigi" "gusi bengkak" "kesulitan mengunyah") (resources))
+    (decision-point-c (case-id C-55) (symptoms "mata merah" "keluar cairan" "benda asing di mata") (resources))
+    (decision-point-c (case-id C-56) (symptoms "gatal hebat" "ruam kulit" "kulit memerah") (resources))
+    (decision-point-c (case-id C-57) (symptoms "nyeri perut" "sulit bab" "perut kembung") (resources))
+    (decision-point-c (case-id C-58) (symptoms "telinga nyeri" "keluar cairan" "berdenging") (resources))
+    (decision-point-c (case-id C-59) (symptoms "sumbatan benda asing di hidung" "hidung bau") (resources))
+    (decision-point-c (case-id C-60) (symptoms "mual ringan" "hilang nafsu makan" "pusing ringan") (resources))
+    (decision-point-c (case-id C-61) (symptoms "pilek" "tenggorokan gatal" "bersin") (resources))
+    (decision-point-c (case-id C-62) (symptoms "sakit kepala ringan" "kelelahan" "demam rendah") (resources))
+    (decision-point-c (case-id C-63) (symptoms "kulit bernanah" "luka infeksi" "demam" "bengkak") (resources))
+    (decision-point-c (case-id C-64) (symptoms "kecemasan berlebih" "serangan panik" "pusing" "mual") (resources))
 )
 
 ;; ===============================
@@ -467,15 +467,13 @@
     (printout t "Masukkan skala nyeri pasien (0-10): ")
     (bind ?pain-input (read))
     
-    ;; Validate input range
     (while (or (< ?pain-input 0) (> ?pain-input 10)) do
         (printout t "Nilai tidak valid. Masukkan skala nyeri (0-10): ")
         (bind ?pain-input (read)))
     
-    ;; Modify the new-case fact to include pain scale
     (modify ?new (pain-scale ?pain-input))
     
-    ;; Determine if pain is severe (>6)
+    ;; Determine if pain severity
     (if (> ?pain-input 6) then
         (modify ?res (point-b3 true))
         (printout t "Pasien mengalami NYERI BERAT." crlf crlf)
@@ -485,7 +483,7 @@
     )
 )
 
-;; Fixed version with best match selection for Point C
+;; Rule: Case-Comparing Classification Decision Point C - Only if B false
 (defrule compare-symptoms-point-c
     ?res <- (decision-result 
                 (point-a ?pa) 
@@ -522,9 +520,8 @@
         )
     )
     
-    ;; If we found any matches, determine point-c value and update decision
+    ;; Update decision
     (if (> ?best-match-count 0) then
-        ;; Determine the value of point-c based on number of resources
         (bind ?resource-length (length$ ?best-match-resources))
         (bind ?point-c-value "None")
         
@@ -538,10 +535,8 @@
             )
         )
         
-        ;; Update decision result
         (modify ?res (point-c ?point-c-value))
         
-        ;; Assert match result
         (assert (match-result 
             (symptoms ?best-match-symptoms)
             (matched-count ?best-match-count)
@@ -577,7 +572,7 @@
     (bind ?response "")
     (bind ?point-c-value "")
 
-    (printout t "Input resource yang dibutuhkan pasien (jika lebih dari satu, pisahkan dengan koma jika lebih dari satu): ")
+    (printout t "Input resource yang dibutuhkan pasien (jika ada, pisahkan dengan koma): ")
     (bind ?response (readline))
     (if (eq ?response "") then
         (bind ?point-c-value "None")
@@ -585,7 +580,7 @@
     )
 
     (if (eq ?point-c-value "") then
-        ;; Count the number of commas to determine resource count
+        ;; Determine resource(s) count
         (bind ?comma-count 0)
         (bind ?pos 0)
         (while (> (str-length ?response) ?pos) do
@@ -594,15 +589,12 @@
             (bind ?pos (+ ?pos 1))
         )
         
-        ;; Number of resources is comma count + 1
         (bind ?length (+ ?comma-count 1))
         
-        ;; Determine point-c-value based on resource count
         (if (eq ?length 1) then (bind ?point-c-value "One"))
         (if (> ?length 1) then (bind ?point-c-value "Many"))
     )
 
-    ;; Assert result and update
     (modify ?res (point-c ?point-c-value))
     (printout t "Resource(s) yang dibutuhkan: [" ?response "] : " ?length crlf)
     (printout t "Label: " ?point-c-value crlf crlf)
@@ -691,9 +683,15 @@
     )
 )
 
+;; Rule: Complete processing
 (defrule mark-processing-complete
     (declare (salience -50))
-    ?res <- (decision-result (final-decision ~"Level-3"))
+    ?res <- (decision-result
+                (final-decision ?fd)
+                (point-d ?pd))
+    (test (or (neq ?fd "Level-3")
+            (and (eq ?pd false)
+                (eq ?fd "Level-3"))))
     (not (processing-complete))
     =>
     (assert (processing-complete (value true)))
