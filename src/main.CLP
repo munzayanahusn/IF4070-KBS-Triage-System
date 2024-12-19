@@ -40,6 +40,15 @@
     (multislot resources)
 )
 
+(deftemplate decision-point-d
+    (slot case-id)
+    (slot age)
+    (slot hr)
+    (slot rr)
+    (slot spo2)
+    (slot vital-sign (default false))
+)
+
 (deftemplate decision-result
     (slot point-a (default unchecked))
     (slot point-b1 (default unchecked))
