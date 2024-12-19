@@ -265,23 +265,37 @@
                 (point-a unchecked) 
                 (final-decision ?fd&:(eq ?fd "Level-3")))
     ?new <- (new-case (symptoms $?new-symptoms))
-    ?case <- (decision-point-a
-                (case-id ?id) 
-                (symptoms $?case-symptoms) 
-                (requires-immediate-lifesaving-intervention ?label))
     =>
-    (bind ?count 0)
-    (foreach ?sym $?new-symptoms
-        (if (member$ ?sym $?case-symptoms) then (bind ?count (+ ?count 1))))
-    (if (> ?count 0) then
-        (modify ?res (point-a ?label))
+    (bind ?best-match-id "")
+    (bind ?best-match-count 0)
+    (bind ?best-match-label false)
+    
+    ;; Find the best match across all cases
+    (do-for-all-facts ((?case decision-point-a)) TRUE
+        (bind ?count 0)
+        (foreach ?sym $?new-symptoms
+            (if (member$ ?sym ?case:symptoms) then 
+                (bind ?count (+ ?count 1))
+            )
+        )
+        ;; Update best match if current count is higher
+        (if (> ?count ?best-match-count) then
+            (bind ?best-match-count ?count)
+            (bind ?best-match-id ?case:case-id)
+            (bind ?best-match-label ?case:requires-immediate-lifesaving-intervention)
+        )
+    )
+    
+    (if (> ?best-match-count 0) then
+        (modify ?res (point-a ?best-match-label))
         (assert (match-result 
-                    (case-id ?id) 
-                    (symptoms ?case-symptoms) 
-                    (matched-count ?count) 
-                    (label ?label) 
+                    (case-id ?best-match-id)
+                    (matched-count ?best-match-count)
+                    (label ?best-match-label)
                     (template "decision-point-a")))
-        (printout t "Matched Case A: " ?id " with " ?count " symptoms. Label: " ?label crlf)))
+        (printout t "Best Matched Case A: " ?best-match-id " with " ?best-match-count " symptoms. Label: " ?best-match-label crlf)
+    )
+)
 
 ;; Rule: Handle No Matches - Case A
 (defrule prompt-no-match-a
@@ -308,24 +322,37 @@
                 (point-b1 unchecked)
                 (final-decision ?fd&:(eq ?fd "Level-3")))
     ?new <- (new-case (symptoms $?new-symptoms))
-    ?case <- (decision-point-b-1 
-                (case-id ?id) 
-                (symptoms $?case-symptoms) 
-                (high-risk ?label))
     =>
-    (bind ?count 0)
-    (foreach ?sym $?new-symptoms
-        (if (member$ ?sym $?case-symptoms) then (bind ?count (+ ?count 1))))
-
-    (if (> ?count 0) then
-        (modify ?res (point-b1 ?label))
+    (bind ?best-match-id "")
+    (bind ?best-match-count 0)
+    (bind ?best-match-label false)
+    
+    ;; Find the best match across all cases
+    (do-for-all-facts ((?case decision-point-b-1)) TRUE
+        (bind ?count 0)
+        (foreach ?sym $?new-symptoms
+            (if (member$ ?sym ?case:symptoms) then 
+                (bind ?count (+ ?count 1))
+            )
+        )
+        ;; Update best match if current count is higher
+        (if (> ?count ?best-match-count) then
+            (bind ?best-match-count ?count)
+            (bind ?best-match-id ?case:case-id)
+            (bind ?best-match-label ?case:high-risk)
+        )
+    )
+    
+    (if (> ?best-match-count 0) then
+        (modify ?res (point-a ?best-match-label))
         (assert (match-result 
-                    (case-id ?id) 
-                    (symptoms ?case-symptoms) 
-                    (matched-count ?count) 
-                    (label ?label) 
+                    (case-id ?best-match-id)
+                    (matched-count ?best-match-count)
+                    (label ?best-match-label)
                     (template "decision-point-b-1")))
-        (printout t "Matched Case B1: " ?id " with " ?count " symptoms. Label: " ?label crlf)))
+        (printout t "Best Matched Case B1: " ?best-match-id " with " ?best-match-count " symptoms. Label: " ?best-match-label crlf)
+    )
+)
 
 ;; Rule: Handle No Matches - Case B1
 (defrule prompt-no-match-b1
@@ -354,25 +381,37 @@
                 (point-b2 unchecked)
                 (final-decision ?fd&:(eq ?fd "Level-3")))
     ?new <- (new-case (symptoms $?new-symptoms))
-    ?case <- (decision-point-b-2 
-                (case-id ?id) 
-                (symptoms $?case-symptoms) 
-                (confused-lethargic-disoriented ?label))
     =>
-    (bind ?count 0)
-    (foreach ?sym $?new-symptoms
-        (if (member$ ?sym $?case-symptoms) then (bind ?count (+ ?count 1))))
-
-    (if (> ?count 0) then
-        (modify ?res (point-b2 ?label))
+    (bind ?best-match-id "")
+    (bind ?best-match-count 0)
+    (bind ?best-match-label false)
+    
+    ;; Find the best match across all cases
+    (do-for-all-facts ((?case decision-point-b-2)) TRUE
+        (bind ?count 0)
+        (foreach ?sym $?new-symptoms
+            (if (member$ ?sym ?case:symptoms) then 
+                (bind ?count (+ ?count 1))
+            )
+        )
+        ;; Update best match if current count is higher
+        (if (> ?count ?best-match-count) then
+            (bind ?best-match-count ?count)
+            (bind ?best-match-id ?case:case-id)
+            (bind ?best-match-label ?case:confused-lethargic-disoriented)
+        )
+    )
+    
+    (if (> ?best-match-count 0) then
+        (modify ?res (point-a ?best-match-label))
         (assert (match-result 
-                    (case-id ?id) 
-                    (symptoms ?case-symptoms) 
-                    (matched-count ?count) 
-                    (label ?label) 
+                    (case-id ?best-match-id)
+                    (matched-count ?best-match-count)
+                    (label ?best-match-label)
                     (template "decision-point-b-2")))
-        (printout t "Matched Case B2: " ?id " with " ?count " symptoms. Label: " ?label crlf)))
-
+        (printout t "Best Matched Case B2: " ?best-match-id " with " ?best-match-count " symptoms. Label: " ?best-match-label crlf)
+    )
+)
 
 ;; Rule: Handle No Matches - Case B2
 (defrule prompt-no-match-b2
@@ -396,7 +435,7 @@
 ;; Rule: Simple Classification Decision Point B3 - Only if A false
 ;; TODO: Make B3 Classification
 
-;; Rule: Case-Comparing Classification Decision Point C - Only if B1 and B2 false/unchecked
+;; Fixed version with best match selection for Point C
 (defrule compare-symptoms-point-c
     ?res <- (decision-result 
                 (point-a ?pa) 
@@ -405,42 +444,62 @@
                 (point-c unchecked) 
                 (final-decision ?fd&:(eq ?fd "Level-3")))
     (test (and (member$ ?pa (create$ false unchecked))
-            (member$ ?pb1 (create$ false unchecked))
-            (member$ ?pb2 (create$ false unchecked))))
+               (member$ ?pb1 (create$ false unchecked))
+               (member$ ?pb2 (create$ false unchecked))))
     ?new <- (new-case (symptoms $?new-symptoms))
-    ?case <- (decision-point-c 
-                (case-id ?id) 
-                (symptoms $?case-symptoms) 
-                (resources $?resources))
     =>
-    (bind ?count 0)
-    (foreach ?sym $?new-symptoms
-        (if (member$ ?sym $?case-symptoms) then (bind ?count (+ ?count 1))))
-
-    (if (> ?count 0) then
-        ;; Check the length of the resources
-        (bind ?length (length$ ?resources))
+    (bind ?best-match-count 0)
+    (bind ?best-match-resources (create$))
+    (bind ?best-match-symptoms (create$))
+    
+    ;; Find the best match across all cases
+    (do-for-all-facts ((?case decision-point-c)) TRUE
+        (bind ?count 0)
+        (foreach ?sym $?new-symptoms
+            (if (member$ ?sym ?case:symptoms) then 
+                (bind ?count (+ ?count 1))
+            )
+        )
+        ;; Update best match if current count is higher
+        (if (> ?count ?best-match-count) then
+            (bind ?best-match-count ?count)
+            (bind ?best-match-resources ?case:resources)
+            (bind ?best-match-symptoms ?case:symptoms)
+        )
+    )
+    
+    ;; If we found any matches, determine point-c value and update decision
+    (if (> ?best-match-count 0) then
+        ;; Determine the value of point-c based on number of resources
+        (bind ?resource-length (length$ ?best-match-resources))
         (bind ?point-c-value "None")
-
-        ;; Determine the value of point-c
-        (if (eq ?length 0) then
-            (bind ?point-c-value "None"))
-        (if (eq ?length 1) then
-            (bind ?point-c-value "One"))
-        (if (> ?length 1) then
-            (bind ?point-c-value "Many"))
         
+        (if (eq ?resource-length 0) then
+            (bind ?point-c-value "None")
+        else 
+            (if (eq ?resource-length 1) then
+                (bind ?point-c-value "One")
+            else 
+                (bind ?point-c-value "Many")
+            )
+        )
+        
+        ;; Update decision result
         (modify ?res (point-c ?point-c-value))
-
+        
+        ;; Assert match result
         (assert (match-result 
-                    (case-id ?id) 
-                    (symptoms ?case-symptoms) 
-                    (matched-count ?count) 
-                    (label ?point-c-value) 
-                    (resources $?resources) 
-                    (template "decision-point-c")))
-
-        (printout t "Matched Case C: " ?id " with " ?count " symptoms. Resource(s): " ?resources " Label: " ?point-c-value crlf)))
+            (symptoms ?best-match-symptoms)
+            (matched-count ?best-match-count)
+            (label ?point-c-value)
+            (resources ?best-match-resources)
+            (template "decision-point-c")))
+            
+        (printout t "Best Matched Case C with " ?best-match-count " symptoms." crlf)
+        (printout t "Required Resource(s): " ?best-match-resources crlf)
+        (printout t "Point C Label: " ?point-c-value crlf)
+    )
+)
 
 ;; Rule: Handle No Matches - Case C
 (defrule prompt-no-match-c
