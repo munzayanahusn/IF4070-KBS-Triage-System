@@ -51,6 +51,9 @@
     (multislot resources)
     (slot template))
 
+(deftemplate processing-complete
+    (slot value (default false)))
+
 ;; ===============================
 ;; Facts Database
 ;; ===============================
@@ -344,7 +347,7 @@
     )
     
     (if (> ?best-match-count 0) then
-        (modify ?res (point-a ?best-match-label))
+        (modify ?res (point-b1 ?best-match-label))
         (assert (match-result 
                     (case-id ?best-match-id)
                     (matched-count ?best-match-count)
@@ -432,20 +435,48 @@
         (modify ?res (point-b2 false))
         (printout t "Pasien TIDAK tampak BINGUNG/LESU/DISORIENTASI." crlf)))
 
-;; Rule: Simple Classification Decision Point B3 - Only if A false
-;; TODO: Make B3 Classification
+;; Rule: Simple Classification Decision Point B3 - Pain Assessment
+(defrule check-severe-pain
+    ?res <- (decision-result 
+                (point-a false) 
+                (point-b3 unchecked)
+                (final-decision ?fd&:(eq ?fd "Level-3")))
+    ?new <- (new-case)
+    =>
+    (printout t "Masukkan skala nyeri pasien (0-10): ")
+    (bind ?pain-input (read))
+    
+    ;; Validate input range
+    (while (or (< ?pain-input 0) (> ?pain-input 10)) do
+        (printout t "Nilai tidak valid. Masukkan skala nyeri (0-10): ")
+        (bind ?pain-input (read)))
+    
+    ;; Modify the new-case fact to include pain scale
+    (modify ?new (pain-scale ?pain-input))
+    
+    ;; Determine if pain is severe (>6)
+    (if (> ?pain-input 6) then
+        (modify ?res (point-b3 true))
+        (printout t "Pasien mengalami NYERI BERAT." crlf)
+    else
+        (modify ?res (point-b3 false))
+        (printout t "Pasien mengalami NYERI RINGAN/SEDANG." crlf)
+    )
+)
 
 ;; Fixed version with best match selection for Point C
 (defrule compare-symptoms-point-c
     ?res <- (decision-result 
                 (point-a ?pa) 
                 (point-b1 ?pb1) 
-                (point-b2 ?pb2) 
+                (point-b2 ?pb2)
+                (point-b3 ?pb3) 
                 (point-c unchecked) 
                 (final-decision ?fd&:(eq ?fd "Level-3")))
-    (test (and (member$ ?pa (create$ false unchecked))
-               (member$ ?pb1 (create$ false unchecked))
-               (member$ ?pb2 (create$ false unchecked))))
+    (test (and (member$ ?pa (create$ false))
+               (member$ ?pb1 (create$ false))
+               (member$ ?pb3 (create$ false))
+               (member$ ?pb3 (create$ false))))
     ?new <- (new-case (symptoms $?new-symptoms))
     =>
     (bind ?best-match-count 0)
@@ -507,11 +538,13 @@
                 (point-a ?pa) 
                 (point-b1 ?pb1) 
                 (point-b2 ?pb2)
+                (point-b3 ?pb3)
                 (point-c unchecked) 
                 (final-decision ?fd&:(eq ?fd "Level-3")))
-    (test (and (member$ ?pa (create$ false unchecked))
-            (member$ ?pb1 (create$ false unchecked))
-            (member$ ?pb2 (create$ false unchecked))))
+    (test (and (member$ ?pa (create$ false))
+            (member$ ?pb1 (create$ false))
+            (member$ ?pb2 (create$ false))
+            (member$ ?pb3 (create$ false))))
     ?new <- (new-case (symptoms $?new-symptoms))
     (not (match-result (template "decision-point-c")))
     =>
@@ -553,6 +586,7 @@
                 (point-a ?pa) 
                 (point-b1 ?pb1) 
                 (point-b2 ?pb2)
+                (point-b3 ?pb3)
                 (point-c ?pc) 
                 (final-decision "Level-3"))
     =>
@@ -560,7 +594,7 @@
         (modify ?res (final-decision "Level-1"))
         (printout t "Final Decision: Level-1" crlf)
     else
-        (if (or (eq ?pb1 true) (eq ?pb2 true)) then
+        (if (or (eq ?pb1 true) (eq ?pb2 true) (eq ?pb3 true)) then
             (modify ?res (final-decision "Level-2"))
             (printout t "Final Decision: Level-2" crlf)
         else
@@ -575,10 +609,17 @@
                     (modify ?res (final-decision "Level-3"))
                     (printout t "Final Decision: Level-3" crlf))))))
 
-
+(defrule mark-processing-complete
+    (declare (salience -50))
+    ?res <- (decision-result (final-decision ~"Level-3"))
+    (not (processing-complete))
+    =>
+    (assert (processing-complete (value true))))
+    
 ;; Rule: Cleanup Match Results
 (defrule clear-match-results
-    (declare (salience -10))
+    (declare (salience -100)) 
+    (processing-complete (value true))
     ?m <- (match-result)
     =>
     (retract ?m))
