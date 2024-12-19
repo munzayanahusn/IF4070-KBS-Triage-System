@@ -475,7 +475,7 @@
                 (final-decision ?fd&:(eq ?fd "Level-3")))
     (test (and (member$ ?pa (create$ false))
                (member$ ?pb1 (create$ false))
-               (member$ ?pb3 (create$ false))
+               (member$ ?pb2 (create$ false))
                (member$ ?pb3 (create$ false))))
     ?new <- (new-case (symptoms $?new-symptoms))
     =>
@@ -578,7 +578,42 @@
     (printout t "Label: " ?point-c-value crlf))
 
 ;; Rule: Simple Classification Decision Point D - Only if C many
-;; TODO: Make D Classification
+(defrule check-vital-sign
+    ?res <- (decision-result 
+                (point-a ?pa) 
+                (point-b1 ?pb1) 
+                (point-b2 ?pb2)
+                (point-b3 ?pb3) 
+                (point-c ?pc)
+                (point-d unchecked) 
+                (final-decision ?fd&:(eq ?fd "Level-3")))
+    (test (and (member$ ?pa (create$ false))
+               (member$ ?pb1 (create$ false))
+               (member$ ?pb2 (create$ false))
+               (member$ ?pb3 (create$ false))
+               (member$ ?pc (create$ "Many"))))
+    ?new <- (new-case
+                (age ?age)
+                (hr ?hr)
+                (rr ?rr)
+                (spo2 ?spo2))
+    =>
+    (if (and (< ?spo2 92) (or 
+            (and (< ?age 1) (> ?hr 190) (> ?rr 60))
+            (and (>= ?age 1) (< ?age 12) (> ?hr 180) (> ?rr 55))
+            (and (>= ?age 12) (< ?age 36) (> ?hr 140) (> ?rr 40))
+            (and (>= ?age 36) (< ?age 60) (> ?hr 120) (> ?rr 35))
+            (and (>= ?age 60) (< ?age 144) (> ?hr 120) (> ?rr 30))
+            (and (>= ?age 144) (< ?age 216) (> ?hr 100) (> ?rr 20))
+            (and (>= ?age 216) (> ?hr 100) (> ?rr 20))))
+        then
+            (modify ?res (point-d true))
+            (printout t "Berdasarkan tanda vital, pasien termasuk BERISIKO TINGGI" crlf)
+        else
+            (modify ?res (point-d false))
+            (printout t "Berdasarkan tanda vital, pasien termasuk TIDAK BERISIKO TINGGI" crlf)
+    )
+)
 
 ;; Rule: Finalize Decision
 (defrule finalize-decision
@@ -588,6 +623,7 @@
                 (point-b2 ?pb2)
                 (point-b3 ?pb3)
                 (point-c ?pc) 
+                (point-d ?pd)
                 (final-decision "Level-3"))
     =>
     (if (eq ?pa true) then
@@ -606,8 +642,12 @@
                     (modify ?res (final-decision "Level-4"))
                     (printout t "Final Decision: Level-4" crlf)
                 else
-                    (modify ?res (final-decision "Level-3"))
-                    (printout t "Final Decision: Level-3" crlf))))))
+                    (if (eq ?pd true) then
+                        (modify ?res (final-decision "Level-2"))
+                        (printout t "Final Decision: Level-2" crlf)
+                    else
+                        (modify ?res (final-decision "Level-3"))
+                        (printout t "Final Decision: Level-3" crlf)))))))
 
 (defrule mark-processing-complete
     (declare (salience -50))
