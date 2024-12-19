@@ -320,15 +320,15 @@
     ?new <- (new-case)
     (not (match-result (template "decision-point-a")))
     =>
-    (printout t "Tidak ada case yang cocok untuk Decision Point A." crlf)
+    (printout t "Tidak ada kasus yang cocok untuk Decision Point A." crlf)
     (printout t "Apakah kasus ini memerlukan penanganan segera? (true/false): ")
     (bind ?response (read))
     (if (eq ?response true) then
         (modify ?res (point-a true))
-        (printout t "Kasus dikategorikan sebagai MEMERLUKAN PENANGANAN SEGERA." crlf crlf)
+        (printout t "Pasien MEMERLUKAN PENANGANAN SEGERA." crlf crlf)
     else
         (modify ?res (point-a false))
-        (printout t "Case dikategorikan sebagai TIDAK MEMERLUKAN PENANGANAN SEGERA." crlf crlf)
+        (printout t "Pasien TIDAK MEMERLUKAN PENANGANAN SEGERA." crlf crlf)
     )
 )
 
@@ -381,15 +381,15 @@
     ?new <- (new-case)
     (not (match-result (template "decision-point-b-1")))
     =>
-    (printout t "Tidak ada case yang cocok untuk Decision Point B1." crlf)
+    (printout t "Tidak ada kasus yang cocok untuk Decision Point B1." crlf)
     (printout t "Apakah case ini termasuk situasi berisiko tinggi? (true/false): ")
     (bind ?response (read))
     (if (eq ?response true) then
         (modify ?res (point-b1 true))
-        (printout t "Kasus dikategorikan sebagai SITUASI BERISIKO TINGGI." crlf crlf)
+        (printout t "Pasien dalam SITUASI BERISIKO TINGGI." crlf crlf)
     else
         (modify ?res (point-b1 false))
-        (printout t "Case dikategorikan sebagai BUKAN SITUASI BERISIKO TINGGI." crlf crlf)
+        (printout t "Pasien dalam BUKAN SITUASI BERISIKO TINGGI." crlf crlf)
     )
 )
 
@@ -442,7 +442,7 @@
     ?new <- (new-case)
     (not (match-result (template "decision-point-b-2")))
     =>
-    (printout t "Tidak ada case yang cocok untuk Decision Point B2." crlf)
+    (printout t "Tidak ada kasus yang cocok untuk Decision Point B2." crlf)
     (printout t "Apakah pasien tampak bingung/lesu/disorientasi? (true/false): ")
     (bind ?response (read))
     (if (eq ?response true) then
@@ -463,6 +463,7 @@
             )
     ?new <- (new-case)
     =>
+    (printout t "Apakah pasien mengalami nyeri? ")
     (printout t "Masukkan skala nyeri pasien (0-10): ")
     (bind ?pain-input (read))
     
@@ -499,6 +500,7 @@
                (member$ ?pb3 (create$ false))))
     ?new <- (new-case (symptoms $?new-symptoms))
     =>
+    (bind ?best-match-id "")
     (bind ?best-match-count 0)
     (bind ?best-match-resources (create$))
     (bind ?best-match-symptoms (create$))
@@ -513,6 +515,7 @@
         )
         ;; Update best match if current count is higher
         (if (> ?count ?best-match-count) then
+            (bind ?best-match-id ?case:case-id)
             (bind ?best-match-count ?count)
             (bind ?best-match-resources ?case:resources)
             (bind ?best-match-symptoms ?case:symptoms)
@@ -546,9 +549,9 @@
             (resources ?best-match-resources)
             (template "decision-point-c")))
             
-        (printout t "Best Matched Case C with " ?best-match-count " symptoms." crlf)
+        (printout t "Best Matched Case C : " ?best-match-id " with " ?best-match-count " symptoms." crlf)
         (printout t "Required Resource(s): " ?best-match-resources crlf)
-        (printout t "Point C Label: " ?point-c-value crlf crlf)
+        (printout t "Label: " ?point-c-value crlf crlf)
     )
 )
 
@@ -570,10 +573,10 @@
     ?new <- (new-case (symptoms $?new-symptoms))
     (not (match-result (template "decision-point-c")))
     =>
-    (printout t "Tidak ada case yang cocok untuk Decision Point C." crlf)
+    (printout t "Tidak ada kasus yang cocok untuk Decision Point C." crlf)
     (bind ?response "")
     (while (eq ?response "") do
-        (printout t "Masukkan resource yang dibutuhkan pasien case tersebut (pisahkan dengan koma): ")
+        (printout t "Masukkan resource yang dibutuhkan pasien tersebut (pisahkan dengan koma): ")
         (bind ?response (readline))
         (if (eq ?response "") then
             (printout t "Input tidak valid. Silakan coba lagi." crlf crlf)
@@ -599,7 +602,7 @@
 
     ;; Assert result and update
     (modify ?res (point-c ?point-c-value))
-    (printout t "Resource(s) untuk case tersebut: [" ?response "] : " ?length crlf)
+    (printout t "Resource(s) yang dibutuhkan: [" ?response "] : " ?length crlf)
     (printout t "Label: " ?point-c-value crlf crlf)
 )
 
