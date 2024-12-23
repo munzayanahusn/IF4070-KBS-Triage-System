@@ -379,7 +379,12 @@
             (modify ?res (input-valid true))
             (printout t "Input validated successfully." crlf)
         else
-            (printout t "Invalid input detected. Ensure all fields are correctly provided and valid." crlf)
+            (printout t "Invalid input detected. Please ensure all fields meet the required conditions:" crlf)
+            (printout t "1. At least one symptom must be provided." crlf)
+            (printout t "2. Age must be greater than 0 months." crlf)
+            (printout t "3. Heart rate (hr) must be 0 or greater." crlf)
+            (printout t "4. Respiratory rate (rr) must be 0 or greater." crlf)
+            (printout t "5. Oxygen saturation (spo2) must be 0 or greater." crlf)
     )
 )
 
