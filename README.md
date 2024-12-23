@@ -1,5 +1,6 @@
 # IF4070-KBS-Triage-System
 IF4070 Representasi Pengetahuan dan Penalaran<br><br>
+Video Penjelasan: https://youtu.be/1yj3mvr8o_M?si=Q6tdGciIich1jBim
 
 ## Sistem Triase Berbasis Knowledge-Based System
 Sistem triase berbasis **knowledge-based system** dirancang untuk membantu menentukan tingkat prioritas penanganan pasien di Instalasi Gawat Darurat (UGD). Sistem ini mengacu pada **Emergency Severity Index (ESI)** dan **Standar Kompetensi Dokter Indonesia (SKDI)** untuk mengelompokkan pasien berdasarkan tingkat keparahan kondisi medis serta kebutuhan sumber daya medis.
@@ -50,13 +51,13 @@ IF4070-KBS-Triage-System
 |   README.md
 |   
 +---data
-|       contoh-data.txt.txt
 |       Decision Knowledges.xlsx
 |       
 +---docs
 |       Emergency_Severity_Index_Handbook.pdf
 |       IF4070-KBS-Triage.drawio.png
-|       IF4070-Laporan-Triage System.pdf
+|       LAPORAN-Kelompok 7-RPP KBS-Triage System.pdf
+|       PPT-Kelompok 7-RPP KBS-Triage System.pdf
 |       SKDI_Perkonsil_11_maret_131.pdf
 |       
 \---src
