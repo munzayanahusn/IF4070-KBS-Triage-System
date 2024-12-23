@@ -50,7 +50,6 @@ IF4070-KBS-Triage-System
 |   README.md
 |   
 +---data
-|       contoh-data.txt.txt
 |       Decision Knowledges.xlsx
 |       
 +---docs
