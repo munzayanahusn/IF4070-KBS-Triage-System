@@ -55,7 +55,8 @@ IF4070-KBS-Triage-System
 +---docs
 |       Emergency_Severity_Index_Handbook.pdf
 |       IF4070-KBS-Triage.drawio.png
-|       IF4070-Laporan-Triage System.pdf
+|       LAPORAN-Kelompok 7-RPP KBS-Triage System.pdf
+|       PPT-Kelompok 7-RPP KBS-Triage System.pdf
 |       SKDI_Perkonsil_11_maret_131.pdf
 |       
 \---src
