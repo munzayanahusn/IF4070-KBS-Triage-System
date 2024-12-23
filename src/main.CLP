@@ -3,10 +3,10 @@
 ;; ===============================
 (deftemplate new-case
     (multislot symptoms)
-    (slot age)
-    (slot hr)
-    (slot rr)
-    (slot spo2)
+    (slot age (default -1))
+    (slot hr (default -1))
+    (slot rr (default -1))
+    (slot spo2 (default -1))
     (slot pain-scale)
 )
 
@@ -50,6 +50,7 @@
 )
 
 (deftemplate decision-result
+    (slot input-valid (default false))
     (slot point-a (default unchecked))
     (slot point-b1 (default unchecked))
     (slot point-b2 (default unchecked))
@@ -358,9 +359,34 @@
     (printout t "Decision system initialized." crlf crlf)
 )
 
+;; Rule: Validate Input
+(defrule validate-input
+    ?res <- (decision-result
+                (input-valid false)
+            )
+    ?case <- (new-case (symptoms $?symptoms)
+                       (age ?age)
+                       (hr ?hr)
+                       (rr ?rr)
+                       (spo2 ?spo2))
+    =>
+    (if (and (>= (length$ $?symptoms) 1)
+             (>= ?age 0) 
+             (>= ?hr 0) 
+             (>= ?rr 0) 
+             (>= ?spo2 0))
+        then
+            (modify ?res (input-valid true))
+            (printout t "Input validated successfully." crlf)
+        else
+            (printout t "Invalid input detected. Ensure all fields are correctly provided and valid." crlf)
+    )
+)
+
 ;; Rule: Case-Comparing Classification Decision Point A
 (defrule compare-symptoms-point-a
     ?res <- (decision-result 
+                (input-valid true)
                 (point-a unchecked) 
                 (final-decision ?fd&:(eq ?fd "Level-3"))
             )
@@ -400,6 +426,7 @@
 ;; Rule: Handle No Matches - Case A
 (defrule prompt-no-match-a
     ?res <- (decision-result 
+                (input-valid true)
                 (point-a unchecked) 
                 (final-decision ?fd&:(eq ?fd "Level-3"))
             )
@@ -432,6 +459,7 @@
 ;; Rule: Case-Comparing Classification Decision Point B1 - Only if A false
 (defrule compare-symptoms-point-b1
     ?res <- (decision-result 
+                (input-valid true)
                 (point-a false) 
                 (point-b1 unchecked)
                 (final-decision ?fd&:(eq ?fd "Level-3")))
@@ -471,6 +499,7 @@
 ;; Rule: Handle No Matches - Case B1
 (defrule prompt-no-match-b1
     ?res <- (decision-result 
+                (input-valid true)
                 (point-a false)
                 (point-b1 unchecked)
                 (final-decision ?fd&:(eq ?fd "Level-3"))
@@ -503,6 +532,7 @@
 ;; Rule: Case-Comparing Classification Decision Point B2 - Only if A false
 (defrule compare-symptoms-point-b2
     ?res <- (decision-result 
+                (input-valid true)
                 (point-a false) 
                 (point-b2 unchecked)
                 (final-decision ?fd&:(eq ?fd "Level-3")))
@@ -529,7 +559,7 @@
     )
     
     (if (> ?best-match-count 0) then
-        (modify ?res (point-a ?best-match-label))
+        (modify ?res (point-b2 ?best-match-label))
         (assert (match-result 
                     (case-id ?best-match-id)
                     (matched-count ?best-match-count)
@@ -542,6 +572,7 @@
 ;; Rule: Handle No Matches - Case B2
 (defrule prompt-no-match-b2
     ?res <- (decision-result 
+                (input-valid true)
                 (point-a false) 
                 (point-b2 unchecked) 
                 (final-decision ?fd&:(eq ?fd "Level-3"))
@@ -574,6 +605,7 @@
 ;; Rule: Rule-Based Decision Point B3 - Pain Assessment
 (defrule check-severe-pain
     ?res <- (decision-result 
+                (input-valid true)
                 (point-a false) 
                 (point-b3 unchecked)
                 (final-decision ?fd&:(eq ?fd "Level-3")))
@@ -612,6 +644,7 @@
 ;; Rule: Case-Comparing Classification Decision Point C - Only if B false
 (defrule compare-symptoms-point-c
     ?res <- (decision-result 
+                (input-valid true)
                 (point-a ?pa) 
                 (point-b1 ?pb1) 
                 (point-b2 ?pb2)
@@ -679,6 +712,7 @@
 ;; Rule: Handle No Matches - Case C
 (defrule prompt-no-match-c
     ?res <- (decision-result 
+                (input-valid true)
                 (point-a ?pa) 
                 (point-b1 ?pb1) 
                 (point-b2 ?pb2)
@@ -734,6 +768,7 @@
 ;; Rule: Rule-Based Decision Point D - Only if C many
 (defrule check-vital-sign
     ?res <- (decision-result 
+                (input-valid true)
                 (point-a ?pa) 
                 (point-b1 ?pb1) 
                 (point-b2 ?pb2)
@@ -776,6 +811,7 @@
 ;; Rule: Finalize Decision
 (defrule finalize-decision
     ?res <- (decision-result
+                (input-valid true)
                 (point-a ?pa) 
                 (point-b1 ?pb1) 
                 (point-b2 ?pb2)
@@ -785,6 +821,8 @@
                 (final-decision "Level-3")
             )
     =>
+    ;; (printout t "Decision Point: " ?pa " - " ?pb1 " - " ?pb2 " - " ?pb3 " - " ?pc " - " ?pd crlf)
+
     (if (eq ?pa true) then
         (modify ?res (final-decision "Level-1"))
         (printout t "Final Decision: Level-1" crlf)
@@ -818,6 +856,7 @@
 (defrule mark-processing-complete
     (declare (salience -50))
     ?res <- (decision-result
+                (input-valid true)
                 (final-decision ?fd)
                 (point-d ?pd))
     (test (or (neq ?fd "Level-3")
